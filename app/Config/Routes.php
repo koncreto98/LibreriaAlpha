@@ -50,6 +50,8 @@ $routes->get('editarlibro','Libros::formularioEditar');
 $routes->get('temas','Temas::index');
 $routes->get('capturarTema','Temas::formularioRegistro');
 $routes->get('editarTema','Temas::formularioEditar');
+$routes->match(['get', 'post'], 'Temas/registrarTema', 'Temas::registrarTema');
+$routes->post('/registrarTema', 'Temas::registrarTema');
 
 
 /*

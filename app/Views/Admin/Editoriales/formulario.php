@@ -15,12 +15,12 @@
             </div>
         </header>
         <div class="box-typical box-typical-padding">
-            <form id="formAgregar" method="post" action="registrarEditorial" >
+            <form id="frmRegistroEditorial">
                 <div class="form-group row">
                     <label for="codigo" class="col-sm-2 form-control-label">Código interno para la Editorial</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">
-                            <input type="number" name="codigo" id="codigo" class="form-control" placeholder="00000"
+                            <input type="number" name="codigo" id="codigo" value=""  class="form-control" placeholder="00000"
                                 minlength="5" maxlength="5" disabled>
                         </p>
                     </div>
@@ -29,7 +29,7 @@
                     <label for="editorial" class="col-sm-2 form-control-label">Nombre de la Editorial</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">
-                            <input type="text" name="editorial" id="editorial" class="form-control"
+                            <input type="text" name="editorial" id="editorial"  onblur="comprobarDatos()"  class="form-control"
                                 placeholder="Editorial Porrua">
                         </p>
                     </div>
@@ -38,7 +38,7 @@
                     <label for="contacto" class="col-sm-2 form-control-label">Nombre del Contacto</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">
-                            <input type="text" name="contacto" id="contacto" class="form-control"
+                            <input type="text" name="contacto" id="contacto"  onblur="comprobarDatos()"  class="form-control"
                                 placeholder="Nombre del Contacto">
                         </p>
                     </div>
@@ -51,15 +51,16 @@
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-earphone"></span>
                                 </div>
-                                <input type="tel" name="telefono" id="telefono" class="form-control"
+                                <input type="tel" name="telefono" id="telefono" onblur="comprobarDatos()" class="form-control"
                                     placeholder="55-00-00-00-00">
                             </div>
                         </div>
                     </div>
-                </div>
-                <button type="submit" id="btnAgregar" class="btn btn-inline btn-success-outline swal-btn-success ">Registrar</button>
+                </div><!-- swal-btn-success  -->
+                <input type="submit" name="btnAgregar" id="btnAgregar" class="btn btn-inline btn-success-outline" value="Registrar Editorial" >
             </form>
         </div><!--.box-typical-->
     </div><!--.container-fluid-->
 </div><!--.page-content-->
 <script src="<?=base_url()?>assets/js/LibreriaAlpha/Editoriales/index.js"></script>
+<script> let BASE_URL = <?=base_url()?>;</script>

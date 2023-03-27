@@ -4,7 +4,9 @@
             <div class="tbl">
                 <div class="tbl-row">
                     <div class="tbl-cell">
+                        <?= site_url('create')?>
                         <h3>Capturar Tema</h3>
+                        <?= base_url('create-editorial')?>
                         <ol class="breadcrumb breadcrumb-simple">
                             <li><a href="/">Dashboard</a></li>
                             <li><a href="temas">Temas</a></li>
@@ -15,7 +17,7 @@
             </div>
         </header>
         <div class="box-typical box-typical-padding">
-            <form>
+            <form id="frmRegistroTema">
                 <div class="form-group row">
                     <label for="codigo" class="col-sm-2 form-control-label">Código interno del Tema</label>
                     <div class="col-sm-10">
@@ -26,30 +28,30 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="editorial" class="col-sm-2 form-control-label">Nombre del Tema</label>
+                    <label for="tema" class="col-sm-2 form-control-label">Nombre del Tema</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">
-                            <input type="text" name="editorial" id="editorial" class="form-control"
-                                placeholder="Editorial Porrua">
+                            <input type="text" name="tema" id="tema" class="form-control"
+                                placeholder="Editorial Porrua" onblur="validarDatos()">
                         </p>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <span class="btn btn-rounded btn-file">
-                            <span>Seleccionar Imagen</span>
-                            <input type="file" name="files[]" multiple="">
+                            <span>Cargar Imagen</span>
+                            <input type="file" class="custom-file-input" id="fileImage" accept="image/*" name="imagen">
                         </span>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-10">
                         <div class="drop-zone" >
+                        <img width="100%" height="100%" id="imgSalida" />
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                    </div>
                 </div>
-                <button type="submit" class="btn btn-inline btn-success-outline swal-btn-success ">Registrar</button>
+                <input type="submit" id="btnSubmit" class="btn btn-inline btn-success-outline swal-btn-success ">Registrar</input>
             </form>
         </div><!--.box-typical-->
     </div><!--.container-fluid-->
 </div><!--.page-content-->
+<script src="<?=base_url()?>assets/js/LibreriaAlpha/Temas/index.js"></script>

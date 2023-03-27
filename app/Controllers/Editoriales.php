@@ -9,6 +9,7 @@ class Editoriales extends BaseController
         return view('Admin/Layout/header')
             . view('Admin/Layout/menu')
             . view('Admin/Editoriales/index')
+            . view('Admin/Layout/plugins')
             . view('Admin/Layout/footer');
     }
 

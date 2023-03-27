@@ -1,59 +1,119 @@
 function fntGenerarCodigo() {
-    codigo = Math.floor(10000 + Math.random() * 90000);
-    $("#codigo").val(codigo);
+  codigo = Math.floor(10000 + Math.random() * 90000);
+  $("#codigo").val(codigo);
+}
+
+function comprobarDatos() {
+  let codigo    = $("#codigo").val();
+  let editorial = $("#editorial").val();
+  let contacto  = $("#contacto").val();
+  let telefono  = $("#telefono").val();
+
+  if (codigo == "" || editorial == "" || contacto == "" || telefono == "") {
+    $("#btnAgregar").addClass("disabled");
+    $("#btnAgregar").css("display", "none");
+  } else {
+    $("#btnAgregar").removeClass("disabled");
+    $("#btnAgregar").css("display", "block");
+  }
+}
+
+function llenarDatos(){
+  let codigo = $("#codigo").val();
+  let editorial = $("#editorial").val();
+  let contacto = $("#contacto").val();
+  let telefono = $("#telefono").val();
+
+  const data = new FormData();
+
+  data.append("codigo", codigo);
+  data.append("editorial", editorial);
+  data.append("contacto", contacto);
+  data.append("telefono", telefono);
+
+  return data;
 }
 
 $(document).ready(function () {
+  if ($("#frmRegistroEditorial")) {
     fntGenerarCodigo();
+    comprobarDatos();
+    let frmRegistro = $("#frmRegistroEditorial");
 
-    if (document.querySelector("#formAgregar")) {
+    $("#frmRegistroEditorial").submit(function (event) {
+      event.preventDefault();
+      fntGuardar();
+    });
 
-        fntGenerarCodigo();
-        let frmRegistro = document.querySelector("#formAgregar");
-      
-        frmRegistro.onsubmit = function (e) {
-          e.preventDefault();
-          fntGuardar();
+    function storeProject()
+        {   
+            let url = $('meta[name=app-url]').attr("content") + "/registrarTema";
+            const data = llenarDatos();
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: data,
+                success: function(response) {
+                    alert("Hola");
+                },
+                error: function(response) {
+                    /*
+                    show validation error
+                    */
+                    console.log(response)
+                    $("#save-project-btn").prop('disabled', false);
+                    if (typeof response.responseJSON.messages.errors !== 'undefined') 
+                    {
+                        let errors = response.responseJSON.messages.errors;
+                        let descriptionValidation = "";
+                        if (typeof errors.description !== 'undefined') 
+                        {
+                            descriptionValidation = '<li>' + errors.description + '</li>';
+                        }
+                        let nameValidation = "";
+                        if (typeof errors.name !== 'undefined') 
+                        {
+                            nameValidation = '<li>' + errors.name + '</li>';
+                        }
+          
+                        let errorHtml = '<div class="alert alert-danger" role="alert">' +
+                            '<b>Validation Error!</b>' +
+                            '<ul>' + nameValidation + descriptionValidation + '</ul>' +
+                        '</div>';
+                        $("#error-div").html(errorHtml);        
+                    }
+                }
+            });
         }
-    }
-});
-
-
-async function fntGuardar() {
-
-    let intCodigo = document.querySelector("#codigo").value;
-    let strEditorial = document.querySelector("#editorial").value;
-    let intTelefono = document.querySelector("#telefono").value;
-    let strContacto = document.querySelector("#contacto").value;
-
-    if (intCodigo <= 0) {
-      alertify.alert('!Atención¡', 'El codigo tiene un valor cero en su campo');
-      return;
-    }
-    if (intCodigo == "" || strEditorial == "" || intTelefono == "" || strContacto == "" ) {
-      alertify.alert('!Atención¡', 'Todos los campos son obligatorios');
-      return;
-    }
-
-    try {
-      const data = new FormData(frmRegistro);
-      let resp = await fetch(BASE_URL + "Controlador/Editorial.php?op=2", {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        body: data
-      });
-      json = await resp.json();
-      if (json.status) {
-        swal("Guardar", json.msg, "success");
-        frmRegistro.reset();
-        codigo = Math.floor(10000 + Math.random() * 90000);
-        $("#txtCodigo").val(codigo);
-      } else {
-        swal("Guardar", json.msg, "error");
+      
+    async function fntGuardar() {
+      try {
+        const data = llenarDatos();
+        let resp = await fetch(
+          BASE_URL + "index.php/Temas/registrarTema",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+            mode: "cors",
+            cache: "no-cache",
+            body: data,
+          }
+        );
+         json = await resp.json();
+         console.log(json)
+        if (json.status) {
+          swal("Guardar", json.msg, "success");
+          frmRegistro.reset();
+          fntGenerarCodigo();
+        } else {
+          swal("Guardar", json.msg, "error");
+        }
+      } catch (error) {
+        console.log("Ocurrio un error: " + error);
       }
-    } catch (error) {
-      console.log("Ocurrio un error: " + error);
     }
   }
-}
+});
